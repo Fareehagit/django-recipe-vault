@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+
+{% block start %}
+
+<nav id="navbar-example2" class="navbar bg-body-tertiary bg-danger px-3 mb-3">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      {% if request.user.is_authenticated %}
+        <a class="btn btn-primary"  href="/logout/">Logout</a>
+      {% else %}
+        <a class="btn btn-primary"  href="/login/">Login</a>
+      {% endif %}
+    </li>
+
+    
+    </li>
+  </ul>
+</nav>
+<div class="container mt-5">
+
+    <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2 class="text-center">Add Reciepe</h2>
+        <hr>
+        <div class="mb-3">
+          <label for="text" class="form-label">Reciepe Name</label>
+          <input type="text" name="reciepe_name" class="form-control">
+          
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Receipe Desription</label>
+          <textarea class="form-control" name="reciepe_description"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Receipe Image</label>
+            <input type="file" name="reciepe_image" class="form-control">
+          </div>
+
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Receipe</button>
+      </form>
+
+      <hr>
+
+      <div class="container mt-5">
+        <div class="mx-auto col-6">
+          <form action="">
+            <div class=" container mb-3">
+              <label for="text" class="form-label">Search Food</label>
+              <input type="text" name="search_re" class="form-control">
+              
+            </div>
+            <button type="submit" class="btn btn-primary mb-3">Search</button>
+          </form>
+          
+
+        </div>
+        <hr>
+        
+
+      </div>
+    
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Recipe Name</th>
+            <th scope="col">Recipe Description</th>
+            <th scope="col">Image</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for recipe in reciepes %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{recipe.reciepe_name}}</td>
+            <td>{{recipe.reciepe_description}}</td>
+            <td>
+              <img src="{{ recipe.reciepe_image.url  }}" style="height: 100px;"></td>
+              <td>
+                <a href="/delete_recipe/{{recipe.id}}" class="btn btn-danger m-2">Delete</a>
+                <a href="/update_recipe/{{recipe.id}}" class="btn btn-success">Update</a>
+              </td>
+          </tr>
+          {% endfor %}
+          
+        </tbody>
+      </table>
+    
+
+</div>
+    
+{% endblock %}
